@@ -4248,7 +4248,7 @@ local Library do
                     BorderSizePixel = 0,
                     TextSize = 14,
                     AnchorPoint = Vector2New(1, 1),
-                    Position = UDim2New(1, -15, 1, -15),
+                    Position = UDim2New(1, -11, 1, -15),
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })
 
@@ -4590,6 +4590,7 @@ local Library do
                 Items["SendButton"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
 
                 Items["Input"].Instance.Text = ""
+                Items["Input"].Instance:CaptureFocus()
             end)
 
             Library:Connect(UserInputService.InputBegan, function(Input)
@@ -4604,6 +4605,7 @@ local Library do
                     Items["SendButton"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
 
                     Items["Input"].Instance.Text = ""
+                    Items["Input"].Instance:CaptureFocus()
                 end
             end)
 
@@ -4902,6 +4904,7 @@ local Library do
 
                     Items["Indicator"]:Tween(nil, {BackgroundColor3 = Library.Theme["Hovered Element"]})
                     Items["Indicator"]:ChangeItemTheme({BackgroundColor3 = "Hovered Element"})
+                    Items["Text"]:Tween(nil, {TextTransparency = 0})
                 end)
 
                 Items["Toggle"]:OnHoverLeave(function()
@@ -4911,6 +4914,7 @@ local Library do
 
                     Items["Indicator"]:Tween(nil, {BackgroundColor3 = Library.Theme["Element"]})
                     Items["Indicator"]:ChangeItemTheme({BackgroundColor3 = "Element"})
+                    Items["Text"]:Tween(nil, {TextTransparency = 0.5})
                 end)
             end
 
@@ -5031,7 +5035,10 @@ local Library do
                 -- print(Input.UserInputType)
                 if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
                     if Toggle.Premium then return end
-                    Toggle:Set(not Toggle.Value)
+
+                    if Library:IsMouseOverFrame(Items["Text"]) or Library:IsMouseOverFrame(Items["Indicator"]) then
+                        Toggle:Set(not Toggle.Value)
+                    end
                 end
             end)
 
@@ -7667,8 +7674,6 @@ local Library do
         end
     end
 end
-
-
 
 getgenv().Library = Library
 return Library
